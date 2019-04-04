@@ -51,7 +51,7 @@ function Spin.OnUpdate()
 			
 			
 			--tick = GlobalVars.GetTickTime() + ((0.03 / NPC.GetTurnRate(MyHero)) * 2.94) + ((NetChannel.GetAvgLatency(Enum.Flow.FLOW_INCOMING) + NetChannel.GetAvgLatency(Enum.Flow.FLOW_OUTGOING)) * 2)
-			tick = GlobalVars.GetTickTime() + NPC.GetTimeToFacePosition(MyHero, (origin + direction)) + ((NetChannel.GetAvgLatency(Enum.Flow.FLOW_INCOMING) + NetChannel.GetAvgLatency(Enum.Flow.FLOW_OUTGOING)) * 2)
+			tick = GlobalVars.GetTickTime() + NPC.GetTimeToFacePosition(MyHero, (origin + direction))
 		end
 	end
 end
