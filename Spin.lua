@@ -11,7 +11,7 @@ function Spin.OnScriptLoad()
 	angle, direction, origin = nil, nil, nil
 	MyHero, MyPlayer = nil, nil
 	
-	Console.Print("[" .. os.date("%I:%M:%S %p") .. "] - - [ Spin.lua ] [ Version 0.2 ] Script load.")
+	Console.Print("[" .. os.date("%I:%M:%S %p") .. "] - - [ Spin.lua ] [ Version 0.3 ] Script load.")
 end
 
 function Spin.OnGameEnd()
@@ -19,7 +19,7 @@ function Spin.OnGameEnd()
 	angle, direction, origin = nil, nil, nil
 	MyHero, MyPlayer = nil, nil
 	
-	Console.Print("[" .. os.date("%I:%M:%S %p") .. "] - - [ Spin.lua ] [ Version 0.2 ] Game end. Reset all variable.")
+	Console.Print("[" .. os.date("%I:%M:%S %p") .. "] - - [ Spin.lua ] [ Version 0.3 ] Game end. Reset all variable.")
 end
 
 function Spin.OnUpdate()
@@ -31,12 +31,12 @@ function Spin.OnUpdate()
 		MyHero = Heroes.GetLocal()
 		MyPlayer = Players.GetLocal()
 		
-		Console.Print("[" .. os.date("%I:%M:%S %p") .. "] - - [ Spin.lua ] [ Version 0.2 ] Game started, init script done.")
+		Console.Print("[" .. os.date("%I:%M:%S %p") .. "] - - [ Spin.lua ] [ Version 0.3 ] Game started, init script done.")
 		return
 	end
   
 	if Entity.IsAlive(MyHero) and Menu.IsKeyDown(Spin.optionKey) and Input.IsInputCaptured() == false then
-		if tick <= GlobalVars.GetTickTime() then
+		if tick < GlobalVars.GetTickTime() then
 			angle = Entity.GetRotation(MyHero)
 			angle:SetYaw(angle:GetYaw() + Angle(0, 168.5, 0):GetYaw())
 			
@@ -47,11 +47,13 @@ function Spin.OnUpdate()
 			
 			origin = NPC.GetAbsOrigin(MyHero)
 			
-			Player.PrepareUnitOrders(MyPlayer, Enum.UnitOrder.DOTA_UNIT_ORDER_MOVE_TO_POSITION, MyHero, (origin + direction), nil, Enum.PlayerOrderIssuer.DOTA_ORDER_ISSUER_HERO_ONLY)
+			Player.PrepareUnitOrders(MyPlayer, Enum.UnitOrder.DOTA_UNIT_ORDER_MOVE_TO_POSITION, MyHero, (origin + direction), nil, Enum.PlayerOrderIssuer.DOTA_ORDER_ISSUER_HERO_ONLY, nil, false, true)
 			
 			
 			--tick = GlobalVars.GetTickTime() + ((0.03 / NPC.GetTurnRate(MyHero)) * 2.94) + ((NetChannel.GetAvgLatency(Enum.Flow.FLOW_INCOMING) + NetChannel.GetAvgLatency(Enum.Flow.FLOW_OUTGOING)) * 2)
-			tick = GlobalVars.GetTickTime() + NPC.GetTimeToFacePosition(MyHero, (origin + direction))
+			--tick = GlobalVars.GetTickTime() + NPC.GetTimeToFacePosition(MyHero, (origin + direction))
+			
+			tick = GlobalVars.GetTickTime() + GlobalVars.GetTickInterval() + NetChannel.GetAvgLatency(Enum.Flow.FLOW_OUTGOING)
 		end
 	end
 end
